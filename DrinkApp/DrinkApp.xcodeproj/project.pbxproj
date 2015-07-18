@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C91D82B11B55A888000FD67C /* RestApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91D82B01B55A888000FD67C /* RestApiManager.swift */; };
+		C91D82B31B55A8C0000FD67C /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91D82B21B55A8C0000FD67C /* SwiftyJSON.swift */; };
 		C971B5F91B4ED37D00CDE615 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C971B5F81B4ED37D00CDE615 /* AppDelegate.swift */; };
 		C971B5FB1B4ED37D00CDE615 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C971B5FA1B4ED37D00CDE615 /* ViewController.swift */; };
 		C971B5FE1B4ED37D00CDE615 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C971B5FC1B4ED37D00CDE615 /* Main.storyboard */; };
@@ -26,6 +28,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C91D82B01B55A888000FD67C /* RestApiManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestApiManager.swift; sourceTree = "<group>"; };
+		C91D82B21B55A8C0000FD67C /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		C971B5F31B4ED37D00CDE615 /* DrinkApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DrinkApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C971B5F71B4ED37D00CDE615 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C971B5F81B4ED37D00CDE615 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -78,6 +82,8 @@
 			isa = PBXGroup;
 			children = (
 				C971B5F81B4ED37D00CDE615 /* AppDelegate.swift */,
+				C91D82B01B55A888000FD67C /* RestApiManager.swift */,
+				C91D82B21B55A8C0000FD67C /* SwiftyJSON.swift */,
 				C971B5FA1B4ED37D00CDE615 /* ViewController.swift */,
 				C971B5FC1B4ED37D00CDE615 /* Main.storyboard */,
 				C971B5FF1B4ED37D00CDE615 /* Images.xcassets */,
@@ -213,7 +219,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				C971B5FB1B4ED37D00CDE615 /* ViewController.swift in Sources */,
+				C91D82B11B55A888000FD67C /* RestApiManager.swift in Sources */,
 				C971B5F91B4ED37D00CDE615 /* AppDelegate.swift in Sources */,
+				C91D82B31B55A8C0000FD67C /* SwiftyJSON.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -409,6 +417,7 @@
 				C971B6141B4ED37D00CDE615 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C971B6151B4ED37D00CDE615 /* Build configuration list for PBXNativeTarget "DrinkAppTests" */ = {
 			isa = XCConfigurationList;
@@ -417,6 +426,7 @@
 				C971B6171B4ED37D00CDE615 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
