@@ -15,10 +15,11 @@ class RestApiManager: NSObject {
     static let sharedInstance = RestApiManager()
     
     // lcboapi.com/stores?geo=m6h+1p2
-    let baseURL = "http://lcboapi.com/stores?geo=m5c+1k9"
+    let baseURL = "http://lcboapi.com/"
     
-    func getRandomUser(onCompletion: (JSON) -> Void) {
-        let route = baseURL
+    func getStore(postalCode: String, onCompletion: (JSON) -> Void) {
+        let route = baseURL + "stores?geo=" + postalCode
+
         makeHTTPGetRequest(route, onCompletion: { json, err in
             onCompletion(json as JSON)
         })

@@ -11,6 +11,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     var tableView:UITableView?
     var stores = NSMutableArray()
+    var selectedPostalCode = "m5c+1k9"
+    
     
     override func viewWillAppear(animated: Bool) {
         let frame:CGRect = CGRect(x: 0, y: 100, width: self.view.frame.width, height: self.view.frame.height-100)
@@ -19,7 +21,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         self.tableView?.delegate = self
         self.view.addSubview(self.tableView!)
         
-        let btn = UIButton(frame: CGRect(x: 0, y: 25, width: self.view.frame.width, height: 50))
+        let btn = UIButton(frame: CGRect(x: 0, y: 25, width: self.view.frame.width, height: 40))
         btn.backgroundColor = UIColor.cyanColor()
         btn.setTitle("Give me stores!", forState: UIControlState.Normal)
         btn.addTarget(self, action: "getStores", forControlEvents: UIControlEvents.TouchUpInside)
@@ -27,23 +29,21 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func getStores() {
-        RestApiManager.sharedInstance.getRandomUser { json in
+        let postalCode = selectedPostalCode
+        RestApiManager.sharedInstance.getStore( postalCode, onCompletion: { json in
             let results = json["result"]
             // println(results)
             for (index: String, subJson: JSON) in results {
-                // println(index)
-                // println(subJson)
                 let store: AnyObject = subJson.object
-                // println(store)
                 self.stores.addObject(store)
                 dispatch_async(dispatch_get_main_queue(),{
                     tableView?.reloadData()
                 })
             }
-        }
+        })
     }
     
-    // table views
+    // number of rows for table view
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.stores.count;
     }
@@ -53,6 +53,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         return 60
     }
     
+    //
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCellWithIdentifier("CELL") as? UITableViewCell
         
@@ -66,7 +67,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         cell!.textLabel?.text = store["name"].string
         cell!.detailTextLabel?.text = storeDistance
-//        cell?.imageView?.image = UIImage(data: data!)
         
         return cell!
     }
