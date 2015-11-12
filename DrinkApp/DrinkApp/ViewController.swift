@@ -21,7 +21,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         self.tableView?.delegate = self
         self.view.addSubview(self.tableView!)
         
-        let btn = UIButton(frame: CGRect(x: 0, y: 25, width: self.view.frame.width, height: 40))
+        let btn = UIButton(frame: CGRect(x: 0, y: 105, width: self.view.frame.width, height: 40))
         btn.backgroundColor = UIColor.cyanColor()
         btn.setTitle("Give me stores!", forState: UIControlState.Normal)
         btn.addTarget(self, action: "getStores", forControlEvents: UIControlEvents.TouchUpInside)
@@ -42,6 +42,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             }
         })
     }
+    
+    
     
     // number of rows for table view
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
