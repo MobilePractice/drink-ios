@@ -12,7 +12,8 @@ var {
   View,
   Image,
   ScrollView,
-  AlertIOS
+  AlertIOS,
+  TouchableHighlight
 } = React;
 
 exports.framework = 'React';
@@ -87,6 +88,9 @@ var DrinkAppReact = React.createClass({
       })
       .done();
   },
+  // beerClick: function() {
+  //     alert(error.message)
+  // },
   render: function() {
     return (
       <ScrollView
@@ -96,11 +100,11 @@ var DrinkAppReact = React.createClass({
                 <Image style={styles.imageButton} source={{uri: 'menu'}} resizeMode="contain"/>
               </View>
               <View style={styles.toolbarTitle}>
-               
+
                 <Image
                   style={styles.logo}
                   source={{uri: 'logo'}} resizeMode="contain"/>
-                
+
               </View>
               <View style={styles.cartSearch}>
                 <Image style={styles.imageButton} source={{uri: 'magnifier'}} resizeMode="contain"/>
@@ -141,27 +145,54 @@ var DrinkAppReact = React.createClass({
               <Text style={styles.boozeTypeText}>Wine</Text>
               <View style={styles.boozeTypeLine} />
             </View>
+			<TouchableHighlight
+				onPress={() => AlertIOS.alert(
+					"Wine Service:",
+				  "Something smooth",
+				  [{text: "Go home, you're drunk"}] // this becomes button text
+				)}
+			>
             <Image
               style={styles.boozeTypeImage}
               source={{uri: 'wine'}} />
+		  </TouchableHighlight>
+
           </View>
           <View style={styles.topBooze}>
             <View style={styles.boozeType}>
               <Text style={styles.boozeTypeText}>Beer</Text>
               <View style={styles.boozeTypeLine} />
             </View>
-            <Image
+			<TouchableHighlight
+				onPress={() => AlertIOS.alert(
+					"Beer Service:",
+				  "2 cervezas por favor",
+				  [{text: "Go home, you're drunk"}] // this becomes button text
+				)}
+			>
+			<Image
               style={styles.boozeTypeImage}
-              source={{uri: 'beer'}} />
+              source={{uri: 'beer'}}
+			  />
+			  </TouchableHighlight>
           </View>
           <View style={styles.topBooze}>
             <View style={styles.boozeType}>
               <Text style={styles.boozeTypeText}>Spirit</Text>
               <View style={styles.boozeTypeLine} />
             </View>
+			<TouchableHighlight
+				onPress={() => AlertIOS.alert(
+					"Spirit Service:",
+				  "if it ain't old...",
+				  [{text: "Go home, you're drunk"}] // this becomes button text
+				)}
+			>
             <Image
               style={styles.boozeTypeImage}
               source={{uri: 'spirit'}} />
+			  </TouchableHighlight>
+
           </View>
       </ScrollView>
     );
@@ -177,13 +208,13 @@ var styles = StyleSheet.create({
         backgroundColor: "#fff"
     },
     toolbarButton:{
-        width: 50,     
+        width: 50,
         textAlign:'center'
     },
     toolbarTitle:{
         textAlign:'center',
         fontWeight:'bold',
-        marginLeft:50,  
+        marginLeft:50,
         flex:1
     },
     imageButton: {
