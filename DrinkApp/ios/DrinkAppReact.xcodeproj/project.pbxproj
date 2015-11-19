@@ -23,6 +23,7 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		8162C7AE1BFD9FC6003DE0D1 /* libRNSearchBar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 813B9BCB1BFD960A00EE9157 /* libRNSearchBar.a */; };
+		8162C7D51BFE4F88003DE0D1 /* libRNTableView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8162C7D41BFE4F79003DE0D1 /* libRNTableView.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 /* End PBXBuildFile section */
 
@@ -104,6 +105,13 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RNSearchBar;
 		};
+		8162C7D31BFE4F79003DE0D1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8162C7C41BFE4F79003DE0D1 /* RNTableView.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 873769951B7CD6E900F7C3C2;
+			remoteInfo = RNTableView;
+		};
 		832341B41AAA6A8300B99B32 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */;
@@ -135,6 +143,7 @@
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		813B9BC61BFD960A00EE9157 /* RNSearchBar.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNSearchBar.xcodeproj; path = "../node_modules/react-native-search-bar/RNSearchBar.xcodeproj"; sourceTree = "<group>"; };
+		8162C7C41BFE4F79003DE0D1 /* RNTableView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNTableView.xcodeproj; path = "../node_modules/react-native-tableview/RNTableView.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -150,6 +159,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8162C7D51BFE4F88003DE0D1 /* libRNTableView.a in Frameworks */,
 				8162C7AE1BFD9FC6003DE0D1 /* libRNSearchBar.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
@@ -278,9 +288,18 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		8162C7C51BFE4F79003DE0D1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8162C7D41BFE4F79003DE0D1 /* libRNTableView.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				8162C7C41BFE4F79003DE0D1 /* RNTableView.xcodeproj */,
 				813B9BC61BFD960A00EE9157 /* RNSearchBar.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
@@ -434,6 +453,10 @@
 					ProductGroup = 813B9BC71BFD960A00EE9157 /* Products */;
 					ProjectRef = 813B9BC61BFD960A00EE9157 /* RNSearchBar.xcodeproj */;
 				},
+				{
+					ProductGroup = 8162C7C51BFE4F79003DE0D1 /* Products */;
+					ProjectRef = 8162C7C41BFE4F79003DE0D1 /* RNTableView.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -512,6 +535,13 @@
 			fileType = archive.ar;
 			path = libRNSearchBar.a;
 			remoteRef = 813B9BCA1BFD960A00EE9157 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8162C7D41BFE4F79003DE0D1 /* libRNTableView.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNTableView.a;
+			remoteRef = 8162C7D31BFE4F79003DE0D1 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		832341B51AAA6A8300B99B32 /* libRCTText.a */ = {

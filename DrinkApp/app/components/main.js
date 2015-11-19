@@ -25,8 +25,9 @@ var Main = React.createClass({
   _loadSearch: function() {
     this.props.navigator.push({
       component: Search,
-      title: "Search",
-      navigationBarHidden: false
+      title: " ",
+      navigationBarHidden: false,
+      tintColor: "black"
     });
   },
   componentDidMount: function() {
