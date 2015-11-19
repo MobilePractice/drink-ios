@@ -31,12 +31,15 @@ var DrinkAppReact = React.createClass({
           <NavigatorIOS
           style={styles.nav}
           barTintColor={"#ffffff"}
+          tintColor={"#000000"}
           shadowHidden={true}
+          translucent={true}
           initialRoute={{
             component: Main,
             passProps: { toggleNav: this.toggleNav},
             onLeftButtonPress: () => this._handleBackButtonPress(),
-            navigationBarHidden: true
+            navigationBarHidden: true,
+            backButtonTitle: " "
           }}
         />
     );
