@@ -22,10 +22,6 @@
 /* eslint strict: 0 */
 /* globals GLOBAL: true, window: true */
 
-// Just to make sure the JS gets packaged up.
-require('RCTDebugComponentOwnership');
-require('RCTDeviceEventEmitter');
-require('PerformanceLogger');
 require('regenerator/runtime');
 
 if (typeof GLOBAL === 'undefined') {
@@ -46,26 +42,33 @@ function handleError(e, isFatal) {
 
 /**
  * Assigns a new global property, replacing the existing one if there is one.
- * 
+ *
  * Existing properties are preserved as `originalPropertyName`. Both properties
  * will maintain the same enumerability & configurability.
- * 
+ *
  * This allows you to undo the more aggressive polyfills, should you need to.
  * For example, if you want to route network requests through DevTools (to trace
  * them):
  *
- *     GLOBAL.XMLHTTPRequest = GLOBAL.originalXMLHTTPRequest;
- * 
+ *     global.XMLHttpRequest = global.originalXMLHttpRequest;
+ *
  * For more info on that particular case, see:
  * https://github.com/facebook/react-native/issues/934
  */
 function polyfillGlobal(name, newValue, scope=GLOBAL) {
-  var descriptor = Object.getOwnPropertyDescriptor(scope, name);
+  var descriptor = Object.getOwnPropertyDescriptor(scope, name) || {
+    // jest for some bad reasons runs the polyfill code multiple times. In jest
+    // environment, XmlHttpRequest doesn't exist so getOwnPropertyDescriptor
+    // returns undefined and defineProperty default for writable is false.
+    // Therefore, the second time it runs, defineProperty will fatal :(
+    writable: true,
+  };
 
   if (scope[name] !== undefined) {
     var backupName = `original${name[0].toUpperCase()}${name.substr(1)}`;
     Object.defineProperty(scope, backupName, {...descriptor, value: scope[name]});
   }
+
   Object.defineProperty(scope, name, {...descriptor, value: newValue});
 }
 
@@ -177,6 +180,7 @@ function setUpNumber() {
   Number.MIN_SAFE_INTEGER = Number.MIN_SAFE_INTEGER || -(Math.pow(2, 53) - 1);
 }
 
+setUpProcessEnv();
 setUpRedBoxErrorHandler();
 setUpTimers();
 setUpAlert();
@@ -186,6 +190,11 @@ setUpRedBoxConsoleErrorHandler();
 setUpGeolocation();
 setUpWebSockets();
 setUpProfile();
-setUpProcessEnv();
 setUpFlowChecker();
 setUpNumber();
+
+// Just to make sure the JS gets packaged up. Wait until the JS environment has
+// been initialized before requiring them.
+require('RCTDebugComponentOwnership');
+require('RCTDeviceEventEmitter');
+require('PerformanceLogger');
