@@ -2,6 +2,9 @@
 
 var React = require('react-native');
 var Search = require('./search');
+var Maps = require('./map');
+var Basic = require('./basicComponent')
+
 var {
   StyleSheet,
   Text,
@@ -23,6 +26,14 @@ var Main = React.createClass({
   _handleNextButtonPress: function() {
     this.props.navigator.push(nextRoute);
   },
+  _loadBasic: function() {
+    this.props.navigator.push({
+      component: Basic,
+      title: "Basic",
+      navigationBarHidden: false,
+      tintColor: "black",
+    });
+  },
   _loadSearch: function(term) {
     this.props.navigator.push({
       component: Search,
@@ -30,6 +41,15 @@ var Main = React.createClass({
       navigationBarHidden: false,
       tintColor: "black",
       passProps: {term:term}
+    });
+  },
+  _loadMap: function() {
+    this.props.navigator.push({
+      component: Maps,
+      title: "Maps",
+      navigationBarHidden: false,
+      tintColor: "black",
+      passProps: {currentLocation: this.state.lastPosition}
     });
   },
   componentDidMount: function() {
@@ -106,7 +126,7 @@ var Main = React.createClass({
                   <Image style={styles.imageButton} source={{uri: 'cart'}} resizeMode="contain"/>
                 </View>
             </View>
-  
+
             <View style={styles.bannerContainer}>
               <Image style={styles.bannerImage} source={{uri: 'banner1'}} resizeMode="cover"/>
             </View>
@@ -123,7 +143,7 @@ var Main = React.createClass({
                 </View>
               </View>
               <View style={styles.locationButtons}>
-                <TouchableOpacity style={styles.locationButton1} onPress={() => this.showType('Change')}><Text style={styles.locationButtonText}>CHANGE MY STORE</Text></TouchableOpacity>
+                <TouchableOpacity style={styles.locationButton1} onPress={()=>this._loadMap()}><Text style={styles.locationButtonText}>CHANGE MY STORE</Text></TouchableOpacity>
                 <TouchableOpacity style={styles.locationButton2} onPress={() => this.showType('My Orders')}><Text style={styles.locationButtonText}>MY ORDERS</Text></TouchableOpacity>
               </View>
             </View>
