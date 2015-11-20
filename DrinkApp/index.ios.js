@@ -15,31 +15,14 @@ var {
 
 
 var DrinkAppReact = React.createClass({
-  getInitialState: function() {
-    return {
-      isNavBarHidden: true
-    }
-  },
-  toggleNav: function(show) {
-    this.setState({isNavBarHidden: show});
-  },
-  _handleBackButtonPress: function() {
-    alert("asdfa")
-  },
   render: function() {
     return (
           <NavigatorIOS
           style={styles.nav}
-          barTintColor={"#ffffff"}
-          tintColor={"#000000"}
           shadowHidden={true}
-          translucent={true}
           initialRoute={{
             component: Main,
-            passProps: { toggleNav: this.toggleNav},
-            onLeftButtonPress: () => this._handleBackButtonPress(),
-            navigationBarHidden: true,
-            backButtonTitle: " "
+            navigationBarHidden: true
           }}
         />
     );
@@ -49,7 +32,7 @@ var DrinkAppReact = React.createClass({
 var styles = StyleSheet.create({
   nav: {
     flex:1,
-    backgroundColor: "red"
+    height: 100
   }
 })
 

@@ -52,7 +52,9 @@ var Search = React.createClass({
       title: product.name,
       navigationBarHidden: false,
       tintColor: "black",
-      passProps: {product: product}
+      passProps: {product: product},
+      rightButtonTitle: 'Order',
+      onRightButtonPress: () => alert("Ordered")
     });
   },
   componentDidMount: function() {
@@ -64,9 +66,15 @@ var Search = React.createClass({
      fetch(apiEndPoint+"products?q="+key)
       .then(response => response.json())
       .then(responseData => {
-        this.setState({
-          dataSource: responseData.result.map((row)=>this._renderRow(row))
-        });
+        if (responseData.result.length) { 
+          this.setState({
+            dataSource: responseData.result.map((row)=>this._renderRow(row))
+          });
+        } else {
+          this.setState({
+            dataSource: []
+          });
+        }
       })
       .done();
   },
@@ -83,11 +91,13 @@ var Search = React.createClass({
                 text={this.props.term}
             />
         </View>
-        <TableView style={styles.listview} >
+        <View>
+          <TableView style={styles.listview} >
             <Section>
               {this.state.dataSource}
             </Section>
-        </TableView>
+          </TableView>
+        </View>
       </View>
       )}
 });
