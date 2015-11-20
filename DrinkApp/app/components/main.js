@@ -3,7 +3,6 @@
 var React = require('react-native');
 var Search = require('./search');
 var Maps = require('./map');
-var Basic = require('./basicComponent')
 
 var {
   StyleSheet,
@@ -25,14 +24,6 @@ var Main = React.createClass({
   },
   _handleNextButtonPress: function() {
     this.props.navigator.push(nextRoute);
-  },
-  _loadBasic: function() {
-    this.props.navigator.push({
-      component: Basic,
-      title: "Basic",
-      navigationBarHidden: false,
-      tintColor: "black",
-    });
   },
   _loadSearch: function(term) {
     this.props.navigator.push({
