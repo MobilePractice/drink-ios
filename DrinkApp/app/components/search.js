@@ -6,6 +6,8 @@ var SearchBar = require('react-native-search-bar');
 
 var TableView = require('react-native-tableview');
 
+var Product = require('./product');
+
 var Section = TableView.Section;
 var Item = TableView.Item;
 var Cell = TableView.Cell;  
@@ -32,28 +34,36 @@ var Search = React.createClass({
     this.props.navigator.push(nextRoute);
   },
   getInitialState: function() {
-    var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     return {
       dataSource: [],
     };
   },
   _renderRow: function(row) {
-    console.log(row.image_thumb_url)
     return (
-      <Cell style={styles.row}  arrow={true}>
+      <Cell onPress={()=>this._loadProduct(row)} key={row.id} style={styles.row}  arrow={true}>
         <Image style={styles.image} source={{uri: row.image_thumb_url}} resizeMode={"contain"} />
-        <Text style={styles.productName}>{row.producer_name}</Text>
+        <Text style={styles.productName}>{row.name}</Text>
       </Cell>
       )
   },
+  _loadProduct: function(product) {
+    this.props.navigator.push({
+      component: Product,
+      title: product.name,
+      navigationBarHidden: false,
+      tintColor: "black",
+      passProps: {product: product}
+    });
+  },
   componentDidMount: function() {
-    
+    if (this.props.term) {
+      this.fetchProductData(this.props.term);
+    }
   },
   fetchProductData: function(key)  {
      fetch(apiEndPoint+"products?q="+key)
       .then(response => response.json())
       .then(responseData => {
-        //var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.setState({
           dataSource: responseData.result.map((row)=>this._renderRow(row))
         });
@@ -62,20 +72,22 @@ var Search = React.createClass({
   },
   render: function(){
     return (
-      <View style={styles.search}>
+      <View style={styles.search} key={"search"}>
         <View style={styles.searchContainer}>
-            <SearchBar style={styles.searchBox} autoFocus={true}
+            <SearchBar style={styles.searchBox}
                 placeholder='Enter keyword for your drink...'
                 ref="keyword"
-                onSearchButtonPress={(key)=>{this.refs.keyword.blur();this.fetchProductData(key)}}
-              />
+                onSearchButtonPress={(key)=>this.fetchProductData(key)}
+                showsCancelButton={true}
+                onCancelButtonPress={this._handleBackButtonPress}
+                text={this.props.term}
+            />
         </View>
         <TableView style={styles.listview} >
-            <Section canMove={true}>
+            <Section>
               {this.state.dataSource}
             </Section>
         </TableView>
-
       </View>
       )}
 });

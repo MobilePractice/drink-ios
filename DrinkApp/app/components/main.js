@@ -9,7 +9,8 @@ var {
   Image,
   ScrollView,
   AlertIOS,
-  TouchableHighlight
+  TouchableHighlight,
+  TouchableOpacity
 } = React;
 
 var apiEndPoint = "https://mobilepractice.herokuapp.com/api/drink/";
@@ -22,12 +23,13 @@ var Main = React.createClass({
   _handleNextButtonPress: function() {
     this.props.navigator.push(nextRoute);
   },
-  _loadSearch: function() {
+  _loadSearch: function(term) {
     this.props.navigator.push({
       component: Search,
-      title: " ",
+      title: "Search",
       navigationBarHidden: false,
-      tintColor: "black"
+      tintColor: "black",
+      passProps: {term:term}
     });
   },
   componentDidMount: function() {
@@ -85,11 +87,7 @@ var Main = React.createClass({
       .done();
   },
   showType: function(msg) {
-      AlertIOS.alert(
-            msg,
-            "Something smooth",
-            [{text: "OK"}]
-          )
+      this._loadSearch(msg);
   },
   render: function(){
     return (
@@ -101,9 +99,9 @@ var Main = React.createClass({
                 <View style={styles.toolbarTitle}>
                   <Image style={styles.logo} source={{uri: 'logo'}} resizeMode="contain"/>
                 </View>
-                <TouchableHighlight  onPress={()=>this._loadSearch()} style={styles.cartSearch}>
+                <TouchableOpacity  onPress={()=>this._loadSearch()} style={styles.cartSearch}>
                   <Image style={styles.imageButton} source={{uri: 'magnifier'}} resizeMode="contain"/>
-                </TouchableHighlight>
+                </TouchableOpacity>
                 <View style={styles.cartSearch}>
                   <Image style={styles.imageButton} source={{uri: 'cart'}} resizeMode="contain"/>
                 </View>
@@ -125,8 +123,8 @@ var Main = React.createClass({
                 </View>
               </View>
               <View style={styles.locationButtons}>
-                <TouchableHighlight style={styles.locationButton1} onPress={() => this.showType('Change')}><Text style={styles.locationButtonText}>CHANGE MY STORE</Text></TouchableHighlight>
-                <View style={styles.locationButton2}><Text style={styles.locationButtonText}>MY ORDERS</Text></View>
+                <TouchableOpacity style={styles.locationButton1} onPress={() => this.showType('Change')}><Text style={styles.locationButtonText}>CHANGE MY STORE</Text></TouchableOpacity>
+                <TouchableOpacity style={styles.locationButton2} onPress={() => this.showType('My Orders')}><Text style={styles.locationButtonText}>MY ORDERS</Text></TouchableOpacity>
               </View>
             </View>
 
@@ -139,9 +137,9 @@ var Main = React.createClass({
                 <Text style={styles.boozeTypeText}>Wine</Text>
                 <View style={styles.boozeTypeLine} />
               </View>
-              <TouchableHighlight onPress={() => this.showType('Wine')}>
+              <TouchableOpacity onPress={() => this.showType('Wine')}>
                 <Image style={styles.boozeTypeImage} source={{uri: 'wine'}} />
-              </TouchableHighlight>
+              </TouchableOpacity>
             </View>
 
             <View style={styles.topBooze}>
@@ -149,9 +147,9 @@ var Main = React.createClass({
                 <Text style={styles.boozeTypeText}>Beer</Text>
                 <View style={styles.boozeTypeLine} />
               </View>
-              <TouchableHighlight onPress={() => this.showType('Beer')}>
+              <TouchableOpacity onPress={() => this.showType('Beer')}>
                 <Image style={styles.boozeTypeImage} source={{uri: 'beer'}}/>
-              </TouchableHighlight>
+              </TouchableOpacity>
             </View>
 
             <View style={styles.topBooze}>
@@ -159,9 +157,9 @@ var Main = React.createClass({
                 <Text style={styles.boozeTypeText}>Spirit</Text>
                 <View style={styles.boozeTypeLine} />
               </View>
-              <TouchableHighlight onPress={() => this.showType('Spirit')}>
+              <TouchableOpacity onPress={() => this.showType('Spirit')}>
                 <Image style={styles.boozeTypeImage} source={{uri: 'spirit'}} />
-              </TouchableHighlight>
+              </TouchableOpacity>
             </View>
         </ScrollView>
       )}
