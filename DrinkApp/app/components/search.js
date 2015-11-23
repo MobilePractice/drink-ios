@@ -53,7 +53,7 @@ var Search = React.createClass({
       navigationBarHidden: false,
       tintColor: "black",
       passProps: {product: product},
-      rightButtonTitle: 'Order',
+      rightButtonTitle: 'Buy',
       onRightButtonPress: () => alert("Ordered")
     });
   },
@@ -80,7 +80,7 @@ var Search = React.createClass({
   },
   render: function(){
     return (
-      <View style={styles.search} key={"search"}>
+      <ScrollView automaticallyAdjustContentInsets={false} style={styles.search} key={"search"}>
         <View style={styles.searchContainer}>
             <SearchBar style={styles.searchBox}
                 placeholder='Enter keyword for your drink...'
@@ -98,7 +98,7 @@ var Search = React.createClass({
             </Section>
           </TableView>
         </View>
-      </View>
+      </ScrollView>
       )}
 });
 
