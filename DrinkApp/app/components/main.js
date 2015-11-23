@@ -105,8 +105,7 @@ var Main = React.createClass({
       <ScrollView automaticallyAdjustContentInsets={false} style={styles.scroll}>
             <View style={styles.toolbar}>
                 <View style={styles.menuContainer}>
-                  <Image style={styles.imageButton} source={{uri: 'menu'}} resizeMode="contain"/>
-                </View>
+                   </View>
                 <View style={styles.toolbarTitle}>
                   <Image style={styles.logo} source={{uri: 'logo'}} resizeMode="contain"/>
                 </View>
@@ -135,7 +134,7 @@ var Main = React.createClass({
               </View>
               <View style={styles.locationButtons}>
                 <TouchableOpacity style={styles.locationButton1} onPress={()=>this._loadMap()}><Text style={styles.locationButtonText}>CHANGE MY STORE</Text></TouchableOpacity>
-                <TouchableOpacity style={styles.locationButton2} onPress={() => this.showType('My Orders')}><Text style={styles.locationButtonText}>MY ORDERS</Text></TouchableOpacity>
+                <TouchableOpacity style={styles.locationButton2} onPress={() => this._loadMap()}><Text style={styles.locationButtonText}>MY ORDERS</Text></TouchableOpacity>
               </View>
             </View>
 
