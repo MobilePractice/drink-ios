@@ -35,13 +35,40 @@ var Main = React.createClass({
     });
   },
   _loadMap: function() {
-    this.props.navigator.push({
-      component: Maps,
-      title: "Maps",
-      navigationBarHidden: false,
-      tintColor: "black",
-      passProps: {currentLocation: this.state.lastPosition}
-    });
+      //console.log("looking for general state: ", this.state);
+      // console.log("initial coordinates: ", this.state.lastPosition.coords);
+      let currentLatitude = this.state.lastPosition.coords.latitude;
+      let currentLongitude = this.state.lastPosition.coords.longitude;
+      let refinedStoreLocations = this.state.allStores.filter(calculateDistance);
+
+      this.props.navigator.push({
+        component: Maps,
+        title: "Maps",
+        navigationBarHidden: false,
+        tintColor: "black",
+        passProps: {
+          currentLocation: this.state.lastPosition,
+          storeLocations: refinedStoreLocations
+        }
+      });
+
+      function calculateDistance(location){
+        var R = 6371; // Radius of the earth in km
+        var dLat = deg2rad(location.latitude - currentLatitude);  // deg2rad below
+        var dLon = deg2rad(location.longitude - currentLongitude);
+        var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(deg2rad(location.latitude)) * Math.cos(deg2rad(currentLatitude)) *
+                Math.sin(dLon/2) * Math.sin(dLon/2);
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        var d = R * c; // Distance in km
+        if(d<2.5){
+            return location;
+        }
+      };
+
+      function deg2rad(deg) {
+        return deg * (Math.PI/180)
+      };
   },
   componentDidMount: function() {
     this.detectLocation();
@@ -73,14 +100,17 @@ var Main = React.createClass({
       .then(response => response.json())
       .then(responseData => {
         if (!responseData.length) {
+            // console.log("gimme the store locations>>>>:", responseData.result);
           this.setState({
             storeName: responseData.result[0].name.toUpperCase(),
-            address1: responseData.result[0].address_line_1.toUpperCase()
+            address1: responseData.result[0].address_line_1.toUpperCase(),
+            allStores: responseData.result
           });
         } else {
           this.setState({
             storeName: "No store found",
-            address1: ""
+            address1: "",
+            allStores: responseData.result
           });
         }
       })
