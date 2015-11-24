@@ -31,8 +31,10 @@ var MapRegionInput = React.createClass({
   getInitialState: function() {
     return {
       region: {
-        latitude: this.props.currentLocation.coords.latitude,
-        longitude: this.props.currentLocation.coords.longitude,
+        //   latitude: this.props.currentLocation.coords.latitude,
+        //   longitude: this.props.currentLocation.coords.longitude,
+          latitude: 0,
+          longitude: 0,
         latitudeDelta: 0,
         longitudeDelta: 0,
       }
@@ -40,7 +42,7 @@ var MapRegionInput = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps) {
-      console.log("looking for position passed in: ", this.props.currentLocation);
+      // console.log("looking for position passed in: ", this.props.currentLocation);
     // this.setState({
     //   region: nextProps.region || this.getInitialState().region
     // });
@@ -133,6 +135,7 @@ var MapRegionInput = React.createClass({
 
 var MapViewExample = React.createClass({
   getInitialState() {
+      // console.log("these are the refined store locations: ", this.props.storeLocations);
     return {
       mapRegion: {
         latitude: this.props.currentLocation.coords.latitude,
@@ -148,7 +151,21 @@ var MapViewExample = React.createClass({
   },
 
   render() {
-      console.log("looking for position passed in: ", this.props.currentLocation);
+      // console.log("looking for position passed in: ", this.props.currentLocation);
+      console.log("looking for position passed in: ", this.props.storeLocations);
+
+      let markers = [];
+      this.props.storeLocations.forEach(function(marker){
+          markers.push(
+              {
+                latitude: marker.latitude,
+                longitude: marker.longitude,
+                title: marker.name,
+                subtitle: marker.address_line_1
+            }
+        );
+      });
+
     return (
       <View style={styles.container}>
         <MapView
@@ -158,7 +175,7 @@ var MapViewExample = React.createClass({
           onRegionChange={this._onRegionChange}
           onRegionChangeComplete={this._onRegionChangeComplete}
           region={this.state.mapRegion || undefined}
-          annotations={this.state.annotations || undefined}
+          annotations={markers || undefined}
         />
       </View>
     );
