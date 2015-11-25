@@ -161,7 +161,9 @@ var MapViewExample = React.createClass({
                 latitude: marker.latitude,
                 longitude: marker.longitude,
                 title: marker.name,
-                subtitle: marker.address_line_1
+                subtitle: marker.address_line_1,
+                hasLeftCallout: true,
+                animateDrop: true
             }
         );
       });
@@ -172,6 +174,8 @@ var MapViewExample = React.createClass({
           maxDelta={0.05}
           minDelta={0}
           style={styles.map}
+          showsUserLocation={true}
+          followUserLocation={false}
           onRegionChange={this._onRegionChange}
           onRegionChangeComplete={this._onRegionChangeComplete}
           region={this.state.mapRegion || undefined}
