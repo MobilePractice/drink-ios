@@ -135,7 +135,6 @@ var MapRegionInput = React.createClass({
 
 var MapViewExample = React.createClass({
   getInitialState() {
-      // console.log("these are the refined store locations: ", this.props.storeLocations);
     return {
       mapRegion: {
         latitude: this.props.currentLocation.coords.latitude,
@@ -151,9 +150,7 @@ var MapViewExample = React.createClass({
   },
 
   render() {
-      // console.log("looking for position passed in: ", this.props.currentLocation);
-      console.log("looking for position passed in: ", this.props.storeLocations);
-
+      
       let markers = [];
       this.props.storeLocations.forEach(function(marker){
           markers.push(
