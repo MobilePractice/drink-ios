@@ -1,12 +1,19 @@
 'use strict';
 
 var React = require('react-native');
+var TableView = require('react-native-tableview');
+var Section = TableView.Section;
+var Item = TableView.Item;
+var Cell = TableView.Cell;
+
 var {
   MapView,
   StyleSheet,
   Text,
+  Image,
   TextInput,
   View,
+  ScrollView,
 } = React;
 
 var regionText = {
@@ -15,6 +22,8 @@ var regionText = {
   latitudeDelta: '0',
   longitudeDelta: '0',
 };
+
+var days = [];
 
 var MapRegionInput = React.createClass({
 
@@ -133,8 +142,16 @@ var MapRegionInput = React.createClass({
 
 });
 
+let weekDays = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+let currentDate = new Date();
+let day = currentDate.getDay();
+let dayName = weekDays[day];
+
+
 var MapViewExample = React.createClass({
   getInitialState() {
+      let _favouriteStore = this.props.favouriteStore;
+
     return {
       mapRegion: {
         latitude: this.props.currentLocation.coords.latitude,
@@ -145,24 +162,48 @@ var MapViewExample = React.createClass({
       mapRegionInput: null,
       annotations: null,
       isFirstLoad: true,
-
+      dataSource: []
     };
   },
 
+
   render() {
-      
-      let markers = [];
-      this.props.storeLocations.forEach(function(marker){
-          markers.push(
-              {
-                latitude: marker.latitude,
-                longitude: marker.longitude,
-                title: marker.name,
-                subtitle: marker.address_line_1,
-                hasLeftCallout: true,
-                animateDrop: true
-            }
-        );
+      let markers = this.props.storeLocations.map((marker)=>{
+          return {
+            latitude: marker.latitude,
+            longitude: marker.longitude,
+            title: marker.name,
+            subtitle: marker.address_line_1,
+            hasLeftCallout: true,
+            animateDrop: true
+        }
+      });
+
+      let storeLocations = this.props.storeLocations.map((store, index)=>{
+          let markerNumber = index+1;
+          let distance = store.distance_in_meters/100;
+          let openingHours = store[dayName+"_open"]/60;
+          let closingHours = store[dayName+"_close"]/60-12;
+          let starMarker = <Image style={styles.marker} source={{uri: 'marker'}} resizeMode="contain"/>;
+          let standardMarker = <Image style={styles.marker} source={{uri: 'blankLocationIcon'}} resizeMode="contain"><Text style={styles.markerNotation}>{markerNumber}</Text></Image>;
+          let usedMarker = undefined;
+          if(store.name.toLowerCase() === this.props.favouriteStore.toLowerCase()){
+              usedMarker = starMarker;
+          } else {
+              usedMarker = standardMarker;
+          }
+
+          return (
+                <Cell style={styles.storeRow} key={store.id}>
+                    <View>
+                        {usedMarker}
+                    </View>
+                    <View style={styles.locationContent}>
+                        <Text style={styles.storeName}>{store.name}</Text>
+                        <Text>{distance}km away, {openingHours}:00 am - {closingHours}:00 pm</Text>
+                    </View>
+                </Cell>
+            )
       });
 
     return (
@@ -177,7 +218,17 @@ var MapViewExample = React.createClass({
           onRegionChangeComplete={this._onRegionChangeComplete}
           region={this.state.mapRegion || undefined}
           annotations={markers || undefined}
+
         />
+        <ScrollView automaticallyAdjustContentInsets={false} style={styles.product} >
+            <View style={styles.storeList}>
+                <TableView style={styles.listview} >
+                  <Section>
+                    {storeLocations}
+                  </Section>
+                </TableView>
+            </View>
+        </ScrollView>
       </View>
     );
   },
@@ -219,49 +270,59 @@ var MapViewExample = React.createClass({
 var styles = StyleSheet.create({
   container: {
       marginTop: 70,
-      flex: 1,
+      marginLeft: 15,
+      marginRight: 15,
+      flex: 1
   },
   map: {
-    flex: 1,
-    flexDirection: "row",
-    margin: 10,
-    borderWidth: 1,
-    borderColor: '#000000',
+    height: 250,
+    // margin: 10,
   },
   row: {
+    paddingTop: 15,
+    paddingBottom: 15,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    marginRight: 16
   },
-  textInput: {
-    width: 150,
-    height: 20,
-    borderWidth: 0.5,
-    borderColor: '#aaaaaa',
-    fontSize: 13,
-    padding: 4,
+  storeRow: {
+      flexDirection: 'row',
+      padding: 15
+  },
+  storeList: {
+      flex: 1,
+      flexDirection: 'row',
+      backgroundColor: 'none'
+  },
+  listview: {
+      flex: 1,
+      paddingRight: 15
   },
   changeButton: {
     alignSelf: 'center',
     marginTop: 5,
-    padding: 3,
-    borderWidth: 0.5,
-    borderColor: '#777777',
+    padding: 3
   },
+  product: {
+      flex: 1
+  },
+  marker: {
+    height: 30,
+    width:30,
+    marginRight: 10,
+    marginLeft: 10
+  },
+  markerNotation: {
+      backgroundColor: "none",
+      paddingTop: 3,
+      fontSize: 12,
+      textAlign: "center"
+  },
+  storeName: {
+      fontWeight: "bold"
+  },
+  locationContent: {
+    flex: 1
+  }
 });
 
-// exports.displayName = (undefined: ?string);
-// exports.title = '<MapView>';
-// exports.description = 'Base component to display maps';
-// exports.examples = [
-//   {
-//     title: 'Map',
-//     render(): ReactElement { return <MapViewExample />; }
-//   },
-//   {
-//     title: 'Map shows user location',
-//     render() {
-//       return  <MapView style={styles.map} showsUserLocation={true} />;
-//     }
-//   }
-// ];
 module.exports = MapViewExample;

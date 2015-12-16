@@ -18,9 +18,10 @@ var DrinkAppReact = React.createClass({
   render: function() {
     return (
           <NavigatorIOS
-          style={styles.nav}
-          shadowHidden={true}
-          initialRoute={{
+          style = {styles.nav}
+          shadowHidden = {true}
+          barTintColor = {"#fff"}
+          initialRoute = {{
             component: Main,
             navigationBarHidden: true
           }}
@@ -32,7 +33,7 @@ var DrinkAppReact = React.createClass({
 var styles = StyleSheet.create({
   nav: {
     flex:1,
-    height: 100
+    height: 100,
   }
 })
 
