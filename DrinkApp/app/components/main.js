@@ -4,6 +4,8 @@ var React = require('react-native');
 var Search = require('./search');
 var Maps = require('./map');
 
+
+
 var {
   StyleSheet,
   Text,
@@ -31,7 +33,8 @@ var Main = React.createClass({
       title: "Search",
       navigationBarHidden: false,
       tintColor: "black",
-      passProps: {term:term}
+      passProps: {term:term},
+      rightButtonIcon: {uri: 'cart'}
     });
   },
   _loadMap: function() {
@@ -47,9 +50,11 @@ var Main = React.createClass({
         navigationBarHidden: false,
         tintColor: "black",
         passProps: {
+          favouriteStore: this.state.storeName,
           currentLocation: this.state.lastPosition,
           storeLocations: refinedStoreLocations
-        }
+      }
+  }
       });
 
       function calculateDistance(location){

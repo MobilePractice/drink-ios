@@ -10,7 +10,7 @@ var Product = require('./product');
 
 var Section = TableView.Section;
 var Item = TableView.Item;
-var Cell = TableView.Cell;  
+var Cell = TableView.Cell;
 
 var {
   StyleSheet,
@@ -66,7 +66,7 @@ var Search = React.createClass({
      fetch(apiEndPoint+"products?q="+key)
       .then(response => response.json())
       .then(responseData => {
-        if (responseData.result.length) { 
+        if (responseData.result.length) {
           this.setState({
             dataSource: responseData.result.map((row)=>this._renderRow(row))
           });
@@ -90,6 +90,7 @@ var Search = React.createClass({
                 onCancelButtonPress={this._handleBackButtonPress}
                 text={this.props.term}
             />
+            {this.props.rightButtonIcon}
         </View>
         <View>
           <TableView style={styles.listview} >
