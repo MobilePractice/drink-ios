@@ -15,127 +15,129 @@ var {
   ScrollView,
   AlertIOS,
   TouchableHighlight,
-  TouchableOpacity
+  TouchableOpacity,
+  NavigatorIOS
 } = React;
 
 var apiEndPoint = "https://mobilepractice.herokuapp.com/api/drink/";
 
-var Main = React.createClass({
+
+var Dashboard = React.createClass({
   _handleBackButtonPress: function() {
-    this.alert("back")
-    this.props.navigator.pop();
-  },
-  _handleNextButtonPress: function() {
-    this.props.navigator.push(nextRoute);
-  },
-  _loadSearch: function(term) {
-    this.props.navigator.push({
-      component: Search,
-      title: "Search",
-      navigationBarHidden: false,
-      tintColor: "black",
-      passProps: {term:term},
-      rightButtonIcon: {uri: 'cart'}
-    });
-  },
-  _loadMap: function() {
-      //console.log("looking for general state: ", this.state);
-      // console.log("initial coordinates: ", this.state.lastPosition.coords);
-      let currentLatitude = this.state.lastPosition.coords.latitude;
-      let currentLongitude = this.state.lastPosition.coords.longitude;
-      let refinedStoreLocations = this.state.allStores.filter(calculateDistance);
-
+      this.alert("back")
+      this.props.navigator.pop();
+    },
+    _handleNextButtonPress: function() {
+      this.props.navigator.push(nextRoute);
+    },
+    _loadSearch: function(term) {
       this.props.navigator.push({
-              component: Maps,
-              title: "Maps",
-              navigationBarHidden: false,
-              tintColor: "black",
-              passProps: {
-                favouriteStore: this.state.storeName,
-                currentLocation: this.state.lastPosition,
-                storeLocations: refinedStoreLocations
-            }
+        component: Search,
+        title: "Search",
+        navigationBarHidden: false,
+        tintColor: "black",
+        passProps: {term:term},
+        rightButtonIcon: {uri: 'cart'}
       });
+    },
+    _loadMap: function() {
+        //console.log("looking for general state: ", this.state);
+        // console.log("initial coordinates: ", this.state.lastPosition.coords);
+        let currentLatitude = this.state.lastPosition.coords.latitude;
+        let currentLongitude = this.state.lastPosition.coords.longitude;
+        let refinedStoreLocations = this.state.allStores.filter(calculateDistance);
 
-      function calculateDistance(location){
-        var R = 6371; // Radius of the earth in km
-        var dLat = deg2rad(location.latitude - currentLatitude);  // deg2rad below
-        var dLon = deg2rad(location.longitude - currentLongitude);
-        var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                Math.cos(deg2rad(location.latitude)) * Math.cos(deg2rad(currentLatitude)) *
-                Math.sin(dLon/2) * Math.sin(dLon/2);
-        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-        var d = R * c; // Distance in km
-        if(d<2.5){
-            return location;
-        }
-      };
+        this.props.navigator.push({
+                component: Maps,
+                title: "Maps",
+                navigationBarHidden: false,
+                tintColor: "black",
+                passProps: {
+                  favouriteStore: this.state.storeName,
+                  currentLocation: this.state.lastPosition,
+                  storeLocations: refinedStoreLocations
+              }
+        });
 
-      function deg2rad(deg) {
-        return deg * (Math.PI/180)
-      };
-  },
-  componentDidMount: function() {
-    this.detectLocation();
-  },
-  watchID: (null: ?number),
-  getInitialState: function() {
-      return {
-        storeName: "loading...",
-        address1: "loading...",
-        initialPosition: 'unknown',
-        lastPosition: 'unknown'
-      };
-  },
-  componentWillUnmount: function() {
-    navigator.geolocation.clearWatch(this.watchID);
-  },
-  detectLocation: function() {
-    navigator.geolocation.getCurrentPosition(
-      (initialPosition) => this.getNearStore(initialPosition.coords),
-      (error) => alert(error.message),
-      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-    );
-    this.watchID = navigator.geolocation.watchPosition((lastPosition) => {
-      this.setState({lastPosition});
-    });
-  },
-  getNearStore: function(coords) {
-    fetch(apiEndPoint+"stores?lat="+ coords.latitude.toString() + "&lon=" + coords.longitude.toString())
-      .then(response => response.json())
-      .then(responseData => {
-        if (!responseData.length) {
-            // console.log("gimme the store locations>>>>:", responseData.result);
+        function calculateDistance(location){
+          var R = 6371; // Radius of the earth in km
+          var dLat = deg2rad(location.latitude - currentLatitude);  // deg2rad below
+          var dLon = deg2rad(location.longitude - currentLongitude);
+          var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                  Math.cos(deg2rad(location.latitude)) * Math.cos(deg2rad(currentLatitude)) *
+                  Math.sin(dLon/2) * Math.sin(dLon/2);
+          var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+          var d = R * c; // Distance in km
+          if(d<2.5){
+              return location;
+          }
+        };
+
+        function deg2rad(deg) {
+          return deg * (Math.PI/180)
+        };
+    },
+    componentDidMount: function() {
+      this.detectLocation();
+    },
+    watchID: (null: ?number),
+    getInitialState: function() {
+        return {
+          storeName: "loading...",
+          address1: "loading...",
+          initialPosition: 'unknown',
+          lastPosition: 'unknown'
+        };
+    },
+    componentWillUnmount: function() {
+      navigator.geolocation.clearWatch(this.watchID);
+    },
+    detectLocation: function() {
+      navigator.geolocation.getCurrentPosition(
+        (initialPosition) => this.getNearStore(initialPosition.coords),
+        (error) => alert(error.message),
+        {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+      );
+      this.watchID = navigator.geolocation.watchPosition((lastPosition) => {
+        this.setState({lastPosition});
+      });
+    },
+    getNearStore: function(coords) {
+      fetch(apiEndPoint+"stores?lat="+ coords.latitude.toString() + "&lon=" + coords.longitude.toString())
+        .then(response => response.json())
+        .then(responseData => {
+          if (!responseData.length) {
+              // console.log("gimme the store locations>>>>:", responseData.result);
+            this.setState({
+              storeName: responseData.result[0].name.toUpperCase(),
+              address1: responseData.result[0].address_line_1.toUpperCase(),
+              allStores: responseData.result
+            });
+          } else {
+            this.setState({
+              storeName: "No store found",
+              address1: "",
+              allStores: responseData.result
+            });
+          }
+        })
+        .done();
+    },
+    fetchStoreData: function()  {
+       fetch(apiEndPoint+"stores")
+        .then(response => response.json())
+        .then(responseData => {
           this.setState({
             storeName: responseData.result[0].name.toUpperCase(),
-            address1: responseData.result[0].address_line_1.toUpperCase(),
-            allStores: responseData.result
+            address1: responseData.result[0].address_line_1.toUpperCase()
           });
-        } else {
-          this.setState({
-            storeName: "No store found",
-            address1: "",
-            allStores: responseData.result
-          });
-        }
-      })
-      .done();
-  },
-  fetchStoreData: function()  {
-     fetch(apiEndPoint+"stores")
-      .then(response => response.json())
-      .then(responseData => {
-        this.setState({
-          storeName: responseData.result[0].name.toUpperCase(),
-          address1: responseData.result[0].address_line_1.toUpperCase()
-        });
-      })
-      .done();
-  },
-  showType: function(msg) {
-      this._loadSearch(msg);
-  },
-  render: function(){
+        })
+        .done();
+    },
+    showType: function(msg) {
+        this._loadSearch(msg);
+    },
+    render: function(){
     return (
       <ScrollView automaticallyAdjustContentInsets={false} style={styles.scroll}>
             <View style={styles.toolbar}>
@@ -144,9 +146,6 @@ var Main = React.createClass({
                 <View style={styles.toolbarTitle}>
                   <Image style={styles.logo} source={{uri: 'logo'}} resizeMode="contain"/>
                 </View>
-                <TouchableOpacity  onPress={()=>this._loadSearch()} style={styles.cartSearch}>
-                  <Image style={styles.imageButton} source={{uri: 'magnifier'}} resizeMode="contain"/>
-                </TouchableOpacity>
                 <View style={styles.cartSearch}>
                   <Image style={styles.imageButton} source={{uri: 'cart'}} resizeMode="contain"/>
                 </View>
@@ -210,7 +209,32 @@ var Main = React.createClass({
       )}
 });
 
+
+var Main = React.createClass({
+  render: function() {
+    return ( 
+      <NavigatorIOS
+        style={styles.container}
+        tintColor="#FFFFFF"
+        translucent={true}
+        titleStyle={styles.navTitle}
+        initialRoute={{
+          title: 'LCBO',
+          component: Dashboard
+        }} />
+      )
+  }
+});
+
 var styles = StyleSheet.create({
+    container: {
+      flex: 1
+    },
+    navTitle: {
+      color: '#000',
+      fontFamily: 'Georgia',
+      fontSize: 18,
+    },
     scroll: {
       flex: 1
     },
