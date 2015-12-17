@@ -21,12 +21,13 @@ var {
   AlertIOS,
   TouchableHighlight,
   TextInput,
-  ListView
+  ListView,
+  NavigatorIOS
 } = React;
 
 var apiEndPoint = "https://mobilepractice.herokuapp.com/api/drink/";
 
-var Search = React.createClass({
+var _Search = React.createClass({
   _handleBackButtonPress: function() {
     this.props.navigator.pop();
   },
@@ -103,7 +104,31 @@ var Search = React.createClass({
       )}
 });
 
+var Search = React.createClass({
+  render: function() {
+    return ( 
+      <NavigatorIOS
+        style={styles.container}
+        translucent={true}
+        titleStyle={styles.navTitle}
+        initialRoute={{
+          title: 'Search',
+          component: _Search,
+          navigationBarHidden: true
+        }} />
+      )
+  }
+});
+
 var styles = StyleSheet.create({
+    container: {
+      flex: 1
+    },
+    navTitle: {
+      color: '#000',
+      fontFamily: 'Georgia',
+      fontSize: 18,
+    },
     listview: {
       flex:1,
       marginRight: 5,
@@ -129,7 +154,7 @@ var styles = StyleSheet.create({
       flex: 1,
     },
     searchContainer: {
-        marginTop: 70,
+        marginTop: 30,
         flexDirection: "row",
         height: 50
     },

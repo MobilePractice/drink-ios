@@ -8,6 +8,7 @@
   "dependencies": {
     "react-native": "^0.14.2",
     "react-native-search-bar": "^2.5.0",
-    "react-native-tableview": "^1.4.6"
+    "react-native-tableview": "^1.4.6",
+    "react-native-vector-icons": "^1.0.1"
   }
 }

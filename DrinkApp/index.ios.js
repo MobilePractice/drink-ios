@@ -1,7 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- */
 'use strict';
 
 var React = require('react-native');
@@ -9,23 +5,38 @@ var Main = require('./app/components/main');
 
 var {
   AppRegistry,
-  NavigatorIOS,
-  StyleSheet
+  StyleSheet,
+  Navigator,
+  View
 } = React;
 
 
 var DrinkAppReact = React.createClass({
+  renderScene: function(route, navigator) {
+    var Component = route.component;
+    return (
+      <View style={styles.container}>
+        <Component
+          route={route}
+          navigator={navigator}
+          topNavigator={navigator} />
+      </View>
+      )
+  },
   render: function() {
     return (
-          <NavigatorIOS
-          style = {styles.nav}
-          shadowHidden = {true}
-          barTintColor = {"#fff"}
-          initialRoute = {{
-            component: Main,
-            navigationBarHidden: true
-          }}
-        />
+      <Navigator
+        sceneStyle={styles.container}
+        ref={(navigator) => { this.navigator = navigator; }}
+        renderScene={this.renderScene}
+        tintColor='#D6573D'
+        barTintColor='#FFFFFD'
+        titleTextColor='#D6573D'
+        navigationBarHidden={true}
+        initialRoute={{
+          title: 'LCBO',
+          component: Main,
+        }} />
     );
   }
 });
@@ -34,6 +45,9 @@ var styles = StyleSheet.create({
   nav: {
     flex:1,
     height: 100,
+  },
+  container: {
+    flex: 1
   }
 })
 
