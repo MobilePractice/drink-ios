@@ -1,6 +1,7 @@
 'use strict';
 
 var React = require('react-native');
+
 var {
   StyleSheet,
   TabBarIOS,
@@ -13,6 +14,7 @@ var {
 var Dashboard = require("./dashboard");
 var Icon = require("react-native-vector-icons/Ionicons");
 
+
 var TabBar = React.createClass({
   statics: {
     title: '<TabBarIOS>',
@@ -20,7 +22,6 @@ var TabBar = React.createClass({
   },
 
   displayName: 'TabBar',
-
   getInitialState: function() {
     return {
       selectedTab: 'dashboard',

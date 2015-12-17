@@ -15,10 +15,13 @@ var {
   Text,
   View,
   Image,
-  ScrollView
+  ScrollView,
+  ActivityIndicatorIOS
 } = React;
 
 var apiEndPoint = "https://mobilepractice.herokuapp.com/api/drink/";
+
+
 
 var Product = React.createClass({
   _handleBackButtonPress: function() {
@@ -29,17 +32,35 @@ var Product = React.createClass({
   },
   componentDidMount: function() {
   },
+  getInitialState: function() {
+    return {
+      loading: false
+    };
+  },
   render: function(){
+    var loader = this.state.loading ?
+      <View style={styles.progress}>
+        <ActivityIndicatorIOS style={{flex:1}}/>
+      </View> : null;
+
     return (
       <ScrollView automaticallyAdjustContentInsets={false} style={styles.product} >
         
         <View style={styles.imageContainer}>
-
-          <Image resizeMode={"contain"} style={styles.image} source={{uri:this.props.product.image_url}} />
-        
-          <View style={styles.price}>
+          
+          <Text style={styles.tagline}>{this.props.product.varietal}, {this.props.product.style}</Text>
           <Text style={styles.priceText}>${(this.props.product.price_in_cents/100).toFixed( 2 )}</Text>
-        </View>
+          {loader}
+          <Image onLoadEnd={()=>console.log("image did load")} 
+                  resizeMode={"contain"} 
+                  style={styles.image} 
+                  source={{uri:this.props.product.image_url}} 
+                  onLoadStart={(e) => this.setState({loading: true})}
+                  onLoad={() => this.setState({loading: false})}
+                
+                  />
+                    
+          <Text style={styles.tagline}>{this.props.product.serving_suggestion}</Text>
         </View>
       </ScrollView>
       )}
@@ -47,23 +68,36 @@ var Product = React.createClass({
 
 var styles = StyleSheet.create({
     imageContainer: {
-      flexDirection: "row"
+      flexDirection: "column"
+    },
+    tagline: {
+      flex: 1,
+      textAlign: "center",
+      fontFamily: "Helvetica-Light",
+      fontSize: 18,
+      marginRight: 20,
+      marginLeft: 20,
+      marginTop: 20
     },
     image: {
       marginRight: 10,
       marginLeft: 10,
-      height: 300,
-      width: 300,
-      flex: 1
+      height: 400,
+      width: 400,
+      flex: 1,
+      alignSelf: "center"
     },
     product: {
         marginTop: 70,
         flex: 1
     },
     priceText: {
-      backgroundColor: "transparent",
+      flex: 1,
+      textAlign: "center",
       fontFamily: "Georgia-Italic",
-      fontWeight: 'bold'
+      fontSize: 24,
+      marginRight: 10,
+      marginLeft: 10,
     },
     price: {
       position: "absolute",
@@ -75,6 +109,9 @@ var styles = StyleSheet.create({
       borderRadius: 40,
       justifyContent: "center",
       alignItems: "center"
+    },
+    progress: {
+      marginTop: 160
     }
 });
 

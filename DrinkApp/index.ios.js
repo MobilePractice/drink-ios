@@ -20,7 +20,7 @@ var DrinkAppReact = React.createClass({
 var styles = StyleSheet.create({
   nav: {
     flex:1,
-    height: 100
+    height: 100,
   }
 })
 

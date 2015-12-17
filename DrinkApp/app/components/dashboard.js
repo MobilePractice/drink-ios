@@ -1,7 +1,12 @@
+
 'use strict';
 
 var React = require('react-native');
 var Search = require('./search');
+var Maps = require('./map');
+
+
+
 var {
   StyleSheet,
   Text,
@@ -10,15 +15,12 @@ var {
   ScrollView,
   AlertIOS,
   TouchableHighlight,
-  TouchableOpacity,
-  NavigatorIOS
+  TouchableOpacity
 } = React;
 
 var apiEndPoint = "https://mobilepractice.herokuapp.com/api/drink/";
 
-
-
-var Dashboard = React.createClass({
+var Main = React.createClass({
   _handleBackButtonPress: function() {
     this.alert("back")
     this.props.navigator.pop();
@@ -32,8 +34,46 @@ var Dashboard = React.createClass({
       title: "Search",
       navigationBarHidden: false,
       tintColor: "black",
-      passProps: {term:term}
+      passProps: {term:term},
+      rightButtonIcon: {uri: 'cart'}
     });
+  },
+  _loadMap: function() {
+      //console.log("looking for general state: ", this.state);
+      // console.log("initial coordinates: ", this.state.lastPosition.coords);
+      let currentLatitude = this.state.lastPosition.coords.latitude;
+      let currentLongitude = this.state.lastPosition.coords.longitude;
+      let refinedStoreLocations = this.state.allStores.filter(calculateDistance);
+
+      this.props.navigator.push({
+              component: Maps,
+              title: "Maps",
+              navigationBarHidden: false,
+              tintColor: "black",
+              passProps: {
+                favouriteStore: this.state.storeName,
+                currentLocation: this.state.lastPosition,
+                storeLocations: refinedStoreLocations
+            }
+      });
+
+      function calculateDistance(location){
+        var R = 6371; // Radius of the earth in km
+        var dLat = deg2rad(location.latitude - currentLatitude);  // deg2rad below
+        var dLon = deg2rad(location.longitude - currentLongitude);
+        var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(deg2rad(location.latitude)) * Math.cos(deg2rad(currentLatitude)) *
+                Math.sin(dLon/2) * Math.sin(dLon/2);
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        var d = R * c; // Distance in km
+        if(d<2.5){
+            return location;
+        }
+      };
+
+      function deg2rad(deg) {
+        return deg * (Math.PI/180)
+      };
   },
   componentDidMount: function() {
     this.detectLocation();
@@ -65,14 +105,17 @@ var Dashboard = React.createClass({
       .then(response => response.json())
       .then(responseData => {
         if (!responseData.length) {
+            // console.log("gimme the store locations>>>>:", responseData.result);
           this.setState({
             storeName: responseData.result[0].name.toUpperCase(),
-            address1: responseData.result[0].address_line_1.toUpperCase()
+            address1: responseData.result[0].address_line_1.toUpperCase(),
+            allStores: responseData.result
           });
         } else {
           this.setState({
             storeName: "No store found",
-            address1: ""
+            address1: "",
+            allStores: responseData.result
           });
         }
       })
@@ -94,12 +137,10 @@ var Dashboard = React.createClass({
   },
   render: function(){
     return (
-
       <ScrollView automaticallyAdjustContentInsets={false} style={styles.scroll}>
             <View style={styles.toolbar}>
                 <View style={styles.menuContainer}>
-                  <Image style={styles.imageButton} source={{uri: 'menu'}} resizeMode="contain"/>
-                </View>
+                   </View>
                 <View style={styles.toolbarTitle}>
                   <Image style={styles.logo} source={{uri: 'logo'}} resizeMode="contain"/>
                 </View>
@@ -110,7 +151,7 @@ var Dashboard = React.createClass({
                   <Image style={styles.imageButton} source={{uri: 'cart'}} resizeMode="contain"/>
                 </View>
             </View>
-  
+
             <View style={styles.bannerContainer}>
               <Image style={styles.bannerImage} source={{uri: 'banner1'}} resizeMode="cover"/>
             </View>
@@ -127,8 +168,8 @@ var Dashboard = React.createClass({
                 </View>
               </View>
               <View style={styles.locationButtons}>
-                <TouchableOpacity style={styles.locationButton1} onPress={() => this.showType('Change')}><Text style={styles.locationButtonText}>CHANGE MY STORE</Text></TouchableOpacity>
-                <TouchableOpacity style={styles.locationButton2} onPress={() => this.showType('My Orders')}><Text style={styles.locationButtonText}>MY ORDERS</Text></TouchableOpacity>
+                <TouchableOpacity style={styles.locationButton1} onPress={()=>this._loadMap()}><Text style={styles.locationButtonText}>CHANGE MY STORE</Text></TouchableOpacity>
+                <TouchableOpacity style={styles.locationButton2} onPress={() => this._loadMap()}><Text style={styles.locationButtonText}>MY ORDERS</Text></TouchableOpacity>
               </View>
             </View>
 
@@ -167,21 +208,6 @@ var Dashboard = React.createClass({
             </View>
         </ScrollView>
       )}
-});
-
-var Main = React.createClass({
-  render: function() {
-    return (
-      <NavigatorIOS
-        style={styles.scroll}
-        initialRoute={{
-          component: Dashboard,
-          title: 'My View Title',
-          passProps: { myProp: 'foo' },
-        }}
-      />
-    )
-  }
 });
 
 var styles = StyleSheet.create({

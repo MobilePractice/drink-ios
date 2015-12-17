@@ -10,7 +10,7 @@ var Product = require('./product');
 
 var Section = TableView.Section;
 var Item = TableView.Item;
-var Cell = TableView.Cell;  
+var Cell = TableView.Cell;
 
 var {
   StyleSheet,
@@ -53,7 +53,7 @@ var Search = React.createClass({
       navigationBarHidden: false,
       tintColor: "black",
       passProps: {product: product},
-      rightButtonTitle: 'Order',
+      rightButtonTitle: 'Buy',
       onRightButtonPress: () => alert("Ordered")
     });
   },
@@ -66,7 +66,7 @@ var Search = React.createClass({
      fetch(apiEndPoint+"products?q="+key)
       .then(response => response.json())
       .then(responseData => {
-        if (responseData.result.length) { 
+        if (responseData.result.length) {
           this.setState({
             dataSource: responseData.result.map((row)=>this._renderRow(row))
           });
@@ -80,7 +80,7 @@ var Search = React.createClass({
   },
   render: function(){
     return (
-      <View style={styles.search} key={"search"}>
+      <ScrollView automaticallyAdjustContentInsets={false} style={styles.search} key={"search"}>
         <View style={styles.searchContainer}>
             <SearchBar style={styles.searchBox}
                 placeholder='Enter keyword for your drink...'
@@ -90,6 +90,7 @@ var Search = React.createClass({
                 onCancelButtonPress={this._handleBackButtonPress}
                 text={this.props.term}
             />
+            {this.props.rightButtonIcon}
         </View>
         <View>
           <TableView style={styles.listview} >
@@ -98,7 +99,7 @@ var Search = React.createClass({
             </Section>
           </TableView>
         </View>
-      </View>
+      </ScrollView>
       )}
 });
 
