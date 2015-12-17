@@ -25,10 +25,10 @@
 		1F947099680B4CC598D6550B /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2E76A916728645FEB02FE95C /* Octicons.ttf */; };
 		51EBDFC8FFFB4BD98EF2BA38 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0731F259D98A42C1991E4D89 /* Ionicons.ttf */; };
 		53606833704D480490BFE4D6 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1AA3AF87268A4A2C9A1FDFFF /* Entypo.ttf */; };
-		6A4BF1E238A94CF2A52B58A7 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CF77FD6793B44CAAE0F1DBE /* libRNVectorIcons.a */; };
 		6A7DCC9216EC4615947BD890 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A946CD511FEF45E583A8CBBE /* Foundation.ttf */; };
 		8162C7AE1BFD9FC6003DE0D1 /* libRNSearchBar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 813B9BCB1BFD960A00EE9157 /* libRNSearchBar.a */; };
 		8162C7D51BFE4F88003DE0D1 /* libRNTableView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8162C7D41BFE4F79003DE0D1 /* libRNTableView.a */; };
+		81A0D7431C22B1AD00E02395 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 81B0B8BF1C2269BB0021D2EC /* libRNVectorIcons.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		BBD01A93256B40F1B96941CB /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B5F877BF19134F189495B87A /* MaterialIcons.ttf */; };
 		CD36844972CF43EB88CF23D6 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A077913877C24BD59A1B4A8F /* EvilIcons.ttf */; };
@@ -159,7 +159,6 @@
 		2E76A916728645FEB02FE95C /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 0; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		75BA08632EEA405F88153516 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 0; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
-		7CF77FD6793B44CAAE0F1DBE /* libRNVectorIcons.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 0; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNVectorIcons.a; sourceTree = "<group>"; };
 		813B9BC61BFD960A00EE9157 /* RNSearchBar.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNSearchBar.xcodeproj; path = "../node_modules/react-native-search-bar/RNSearchBar.xcodeproj"; sourceTree = "<group>"; };
 		8162C7C41BFE4F79003DE0D1 /* RNTableView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNTableView.xcodeproj; path = "../node_modules/react-native-tableview/RNTableView.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
@@ -194,7 +193,7 @@
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
-				6A4BF1E238A94CF2A52B58A7 /* libRNVectorIcons.a in Frameworks */,
+				81A0D7431C22B1AD00E02395 /* libRNVectorIcons.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -419,12 +418,15 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 610;
+				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
+					};
+					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = 9LD4QH69LL;
 					};
 				};
 			};
@@ -682,6 +684,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DrinkAppReact.app/DrinkAppReact";
 			};
@@ -703,6 +706,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DrinkAppReact.app/DrinkAppReact";
 			};
@@ -712,6 +716,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEAD_CODE_STRIPPING = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -721,9 +727,12 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 				);
 				INFOPLIST_FILE = DrinkAppReact/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = LCBO;
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -731,6 +740,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -739,9 +750,12 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 				);
 				INFOPLIST_FILE = DrinkAppReact/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = LCBO;
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
@@ -765,6 +779,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;

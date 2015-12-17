@@ -21,10 +21,10 @@ var {
 
 var apiEndPoint = "https://mobilepractice.herokuapp.com/api/drink/";
 
+var Icon = require("react-native-vector-icons/Ionicons");
 
 var Dashboard = React.createClass({
   _handleBackButtonPress: function() {
-      this.alert("back")
       this.props.navigator.pop();
     },
     _handleNextButtonPress: function() {
@@ -37,7 +37,7 @@ var Dashboard = React.createClass({
         navigationBarHidden: false,
         tintColor: "black",
         passProps: {term:term},
-        rightButtonIcon: {uri: 'cart'}
+        rightButtonIcon: this.state.rightIcon
       });
     },
     _loadMap: function() {
@@ -51,7 +51,9 @@ var Dashboard = React.createClass({
                 component: Maps,
                 title: "Maps",
                 navigationBarHidden: false,
-                tintColor: "black",
+                leftButtonIcon: this.state.rightIcon,
+                onLeftButtonPress: this._handleBackButtonPress,
+                tintColor: "#000",
                 passProps: {
                   favouriteStore: this.state.storeName,
                   currentLocation: this.state.lastPosition,
@@ -79,6 +81,7 @@ var Dashboard = React.createClass({
     },
     componentDidMount: function() {
       this.detectLocation();
+      Icon.getImageSource('ios-arrow-thin-left', 40, 'black').then((source) => this.setState({ rightIcon: source }));
     },
     watchID: (null: ?number),
     getInitialState: function() {
@@ -86,7 +89,8 @@ var Dashboard = React.createClass({
           storeName: "loading...",
           address1: "loading...",
           initialPosition: 'unknown',
-          lastPosition: 'unknown'
+          lastPosition: 'unknown',
+          rightIcon: null
         };
     },
     componentWillUnmount: function() {
@@ -215,12 +219,13 @@ var Main = React.createClass({
     return ( 
       <NavigatorIOS
         style={styles.container}
-        tintColor="#FFFFFF"
+        itemWrapperStyle={{backgroundColor:"red"}}
         translucent={true}
         titleStyle={styles.navTitle}
         initialRoute={{
           title: 'LCBO',
-          component: Dashboard
+          component: Dashboard,
+          navigationBarHidden: true
         }} />
       )
   }
@@ -251,7 +256,6 @@ var styles = StyleSheet.create({
     toolbarTitle:{
         textAlign:'center',
         fontWeight:'bold',
-        marginLeft:50,
         flex:1
     },
     imageButton: {

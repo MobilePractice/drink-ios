@@ -12,6 +12,8 @@ var {
 } = React;
 
 var Dashboard = require("./dashboard");
+var Search = require("./search");
+
 var Icon = require("react-native-vector-icons/Ionicons");
 
 var TabBar = React.createClass({
@@ -66,7 +68,7 @@ var TabBar = React.createClass({
               selectedTab: "search",
             });
           }}>
-          <Dashboard />
+          <Search />
         </Icon.TabBarItem>
 
         <Icon.TabBarItem
