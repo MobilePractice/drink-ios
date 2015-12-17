@@ -1,7 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- */
 'use strict';
 
 var React = require('react-native');
@@ -9,22 +5,14 @@ var Main = require('./app/components/main');
 
 var {
   AppRegistry,
-  NavigatorIOS,
-  StyleSheet
+  StyleSheet,
 } = React;
 
 
 var DrinkAppReact = React.createClass({
   render: function() {
     return (
-          <NavigatorIOS
-          style={styles.nav}
-          shadowHidden={true}
-          initialRoute={{
-            component: Main,
-            navigationBarHidden: true
-          }}
-        />
+        <Main />
     );
   }
 });
