@@ -219,7 +219,7 @@ var Main = React.createClass({
     return ( 
       <NavigatorIOS
         style={styles.container}
-        itemWrapperStyle={{backgroundColor:"red"}}
+        itemWrapperStyle={{backgroundColor:"#f9f9f9"}}
         translucent={true}
         titleStyle={styles.navTitle}
         initialRoute={{

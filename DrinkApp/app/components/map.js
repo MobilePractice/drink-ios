@@ -269,20 +269,16 @@ var MapViewExample = React.createClass({
 
 var styles = StyleSheet.create({
   container: {
-      marginTop: 70,
-      marginLeft: 15,
-      marginRight: 15,
+      marginTop: 65,
       flex: 1
   },
   map: {
-    height: 250,
-    // margin: 10,
+    height: 180,
   },
   row: {
     paddingTop: 15,
     paddingBottom: 15,
-    flexDirection: 'row',
-    marginRight: 16
+    flexDirection: 'row'
   },
   storeRow: {
       flexDirection: 'row',
@@ -294,8 +290,7 @@ var styles = StyleSheet.create({
       backgroundColor: 'none'
   },
   listview: {
-      flex: 1,
-      paddingRight: 15
+      flex: 1
   },
   changeButton: {
     alignSelf: 'center',
@@ -303,7 +298,8 @@ var styles = StyleSheet.create({
     padding: 3
   },
   product: {
-      flex: 1
+      flex: 1,
+      marginBottom: 50
   },
   marker: {
     height: 30,
