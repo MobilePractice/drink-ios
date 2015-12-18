@@ -4,7 +4,7 @@
 var React = require('react-native');
 var Search = require('./search');
 var Maps = require('./map');
-
+var TopPicks = require("./_toppicks");
 
 
 var {
@@ -180,7 +180,13 @@ var Dashboard = React.createClass({
       }
     },
     showType: function(msg) {
-        this._loadSearch(msg);
+        this.props.navigator.push({
+        component: TopPicks,
+        title: "Top Picks",
+        navigationBarHidden: false,
+        tintColor: "black",
+        passProps: {term:msg}
+      });
     },
     _openStatusStyle :function() { 
       return this.state.storeTimeStatus === "CLOSED" ? 
