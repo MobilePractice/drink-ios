@@ -14,6 +14,7 @@ var Dashboard = require("./dashboard");
 var Search = require("./search");
 var TopPicks = require("./toppicks");
 var Profile = require("./profile");
+var Orders = require("./orders");
 
 var Icon = require("react-native-vector-icons/Ionicons");
 
@@ -82,7 +83,7 @@ var TabBar = React.createClass({
               selectedTab: "orders",
             });
           }}>
-          <Dashboard />
+          <Orders />
         </Icon.TabBarItem>
 
         <Icon.TabBarItem
