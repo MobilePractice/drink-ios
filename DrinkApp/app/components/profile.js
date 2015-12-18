@@ -19,6 +19,7 @@ var {
   ScrollView,
   ActionSheetIOS,
   NavigatorIOS,
+  SwitchIOS
 } = React;
 
 var BUTTONS = [
@@ -54,6 +55,11 @@ var _Profile = React.createClass({
       this.setState({ clicked: BUTTONS[buttonIndex] });
     });
   },
+  getInitialState: function() {
+    return {
+      trueSwitchIsOn: true
+    }
+  },
   render: function(){
     let options = ["CHANGE LOGIN & PASSWORD", "EDIT PROFILE", "EDIT BILLING", "RECEIPTS", "NOTIFICATION SETTINGS"]
     let profileOptions = options.map((option,id) => {
@@ -72,10 +78,24 @@ var _Profile = React.createClass({
             source={{uri: 'https://avatars0.githubusercontent.com/u/4745074?v=3&s=460'}} />
         </View>
         <Text style={styles.profileName}>Jason Matthews</Text>
-        <View  style={styles.listview}>
+        <View style={styles.listview}>
           <TableView >
             <Section  arrow={true}>
               {profileOptions}
+            </Section>
+          </TableView>
+        </View>
+        <Text style={styles.listTitle}>Alerts</Text>
+        <View style={styles.listview}>
+          <TableView>
+            <Section>
+              <Cell key="beacon">  
+                  <View style={styles.row}>
+                    <Text style={styles.optionText}>IN-STORE NOTIFICATION</Text>
+                    <View style={{width: 80, justifyContent: "center", flexDirection: "row"}}><SwitchIOS style={{marginTop:2}} onValueChange={(value) => this.setState({trueSwitchIsOn: value})}
+          value={this.state.trueSwitchIsOn} /></View>
+                  </View>
+              </Cell>
             </Section>
           </TableView>
         </View>
@@ -123,11 +143,12 @@ var styles = StyleSheet.create({
     },
     row: {
       flexDirection:'row',
-      padding: 10,
     },
     optionText: {
       fontFamily: 'Georgia',
-      marginLeft: 10
+      marginLeft: 10,
+      padding: 10,
+      flex: 1
     },
     image: {
       width: 70,
@@ -159,8 +180,16 @@ var styles = StyleSheet.create({
       flex: 1,
       marginTop: 10
     },
+    listTitle: {
+      fontFamily: "Helvetica",
+      marginLeft: 10,
+      paddingTop: 10,
+      fontSize: 16,
+      color: "#999"
+    },
     signOut: {
       margin: 20,
+      marginTop: 40,
       borderColor: "#c7c8ca",
       borderWidth: 1,
       backgroundColor: "white",
