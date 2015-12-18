@@ -6,8 +6,7 @@ var {
   StyleSheet,
   TabBarIOS,
   Text,
-  View,
-  NavigatorIOS
+  View
   
 } = React;
 
