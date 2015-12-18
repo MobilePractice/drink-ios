@@ -90,7 +90,8 @@ var Dashboard = React.createClass({
           address1: "loading...",
           initialPosition: 'unknown',
           lastPosition: 'unknown',
-          rightIcon: null
+          rightIcon: null,
+          storeTime: ""
         };
     },
     componentWillUnmount: function() {
@@ -99,12 +100,19 @@ var Dashboard = React.createClass({
     detectLocation: function() {
       navigator.geolocation.getCurrentPosition(
         (initialPosition) => this.getNearStore(initialPosition.coords),
-        (error) => alert(error.message),
+        (error) => this.didNotDetectLocation(error),
         {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
       );
       this.watchID = navigator.geolocation.watchPosition((lastPosition) => {
         this.setState({lastPosition});
       });
+    },
+    didNotDetectLocation: function(error) {
+      this.setState({
+        storeName: "Could not detect your location",
+        address1: "Make sure that location services is enabled"
+      });
+      console.log(error);
     },
     getNearStore: function(coords) {
       fetch(apiEndPoint+"stores?lat="+ coords.latitude.toString() + "&lon=" + coords.longitude.toString())
@@ -125,9 +133,9 @@ var Dashboard = React.createClass({
             });
           }
         })
-        .done();
+        .catch(this.didNotDetectLocation);
     },
-    fetchStoreData: function()  {
+    fetchStoreData: function() {
        fetch(apiEndPoint+"stores")
         .then(response => response.json())
         .then(responseData => {
@@ -136,7 +144,7 @@ var Dashboard = React.createClass({
             address1: responseData.result[0].address_line_1.toUpperCase()
           });
         })
-        .done();
+        .catch(this.didNotDetectLocation);
     },
     showType: function(msg) {
         this._loadSearch(msg);
@@ -166,8 +174,8 @@ var Dashboard = React.createClass({
               <View style={styles.preferredStore}>
                 <Image style={styles.marker} source={{uri: 'marker'}} resizeMode="contain"/>
                 <View style={styles.preferredStoreTextContainer}>
-                  <Text style={styles.storeName}>{this.state.storeName}</Text>
-                  <Text style={styles.storeAddressAndTime}>{this.state.address1}, 9:30AM - 10:00PM</Text>
+                  <Text numberOfLines={1} style={styles.storeName}>{this.state.storeName}</Text>
+                  <Text numberOfLines={1} style={styles.storeAddressAndTime}>{this.state.address1} {this.state.storeTime}</Text>
                 </View>
               </View>
               <View style={styles.locationButtons}>
@@ -324,7 +332,7 @@ var styles = StyleSheet.create({
     storeAddressAndTime: {
       fontSize: 11,
       color: "#6d6e71",
-      fontFamily: "Helvetica-Light"
+      fontFamily: "Helvetica-Light",
     },
     locationButtons: {
       flexDirection: "row",
