@@ -8,6 +8,8 @@ var TableView = require('react-native-tableview');
 
 var Product = require('./product');
 
+var _TopPicks = require("./_toppicks");
+
 var Section = TableView.Section;
 var Item = TableView.Item;
 var Cell = TableView.Cell;
@@ -25,106 +27,6 @@ var {
   NavigatorIOS,
   SegmentedControlIOS
 } = React;
-
-var apiEndPoint = "https://mobilepractice.herokuapp.com/api/drink/";
-
-var _TopPicks = React.createClass({
-  _handleBackButtonPress: function() {
-    this.props.navigator.pop();
-  },
-  _handleNextButtonPress: function() {
-    this.props.navigator.push(nextRoute);
-  },
-  getInitialState: function() {
-    return {
-      selectedIndex: 0,
-      dataSource: [],
-        Beer: [],
-        Wine: [],
-        Spirit: []
-    };
-  },
-  _renderRow: function(row) {
-    return (
-      <Cell onPress={()=>this._loadProduct(row)} key={row.id} style={styles.row}  arrow={true}>
-        <Image style={styles.image} source={{uri: row.image_thumb_url}} resizeMode={"contain"} />
-        <Text style={styles.productName}>{row.name}</Text>
-      </Cell>
-      )
-  },
-  _loadProduct: function(product) {
-    this.props.navigator.push({
-      component: Product,
-      title: product.name,
-      navigationBarHidden: false,
-      tintColor: "black",
-      passProps: {product: product},
-      rightButtonTitle: 'Buy',
-      onRightButtonPress: () => alert("Ordered")
-    });
-  },
-  componentDidMount: function() {
-    this.fetchProductData("Beer").then((product) => {
-      this.setState({
-        dataSource: product.map((row) => this._renderRow(row)),
-           Beer: product
-        
-      });
-    });
-
-    this.fetchProductData("Wine").then((product) => {
-      this.setState({
-          Wine: product
-        
-      });
-    });
-
-    this.fetchProductData("Spirit").then((product) => {
-      this.setState({
-           Spirit: product
-        
-      });
-    });
-    
-  },
-  fetchProductData: function(key)  {
-     return fetch(apiEndPoint+"products?q="+key)
-      .then(response => response.json())
-      .then(responseData => {
-        if (responseData.result.length) {
-          return responseData.result;
-        } else {
-          return [];
-        }
-      })
-      .catch(this.failToGetData);
-  },
-  failToGetData: function(e) {
-    console.log("failToGetData",e);
-  },
-  render: function(){
-    return (
-      <ScrollView automaticallyAdjustContentInsets={false} style={styles.search} key={"search"}>
-            <SegmentedControlIOS onChange={this._segmentChange} style={styles.segment} tintColor="#000" values={['Beer', 'Wine', 'Spirit']} selectedIndex={this.state.selectedIndex} />
-      
-        <View>
-          <TableView style={styles.listview} >
-            <Section>
-              {this.state.dataSource}
-            </Section>
-          </TableView>
-        </View>
-      </ScrollView>
-      )
-  },
-  _segmentChange: function(event) {
-    let value = event.nativeEvent.value;
-    this.setState({
-      selectedIndex: event.nativeEvent.selectedSegmentIndex,
-      dataSource: this.state[value].map((row) => this._renderRow(row))
-    });
-  },
-});
 
 var TopPicks = React.createClass({
   render: function() {
