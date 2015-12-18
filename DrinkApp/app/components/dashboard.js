@@ -125,7 +125,7 @@ var Dashboard = React.createClass({
         storeName: store.name.toUpperCase(),
         address1: store.address_line_1.toUpperCase(),
         storeTime: ", " + _time.open + " - " + _time.close,
-        storeTimeStatus: _time.status
+        storeTimeStatus: _time.status()
       });
     },
     getNearStore: function(coords) {
@@ -139,7 +139,7 @@ var Dashboard = React.createClass({
               storeName: responseData.result[0].name.toUpperCase(),
               address1: responseData.result[0].address_line_1.toUpperCase(),
               storeTime: ", " + _time.open + " - " + _time.close,
-              storeTimeStatus: _time.status,
+              storeTimeStatus: _time.status(),
               allStores: responseData.result
             });
           } else {
@@ -172,11 +172,11 @@ var Dashboard = React.createClass({
       let currentDate = new Date();
       let day = currentDate.getDay();
       let dayName = weekDays[day];
-
+      let hours = currentDate.getHours() * 60
       return {
         open: (store[dayName+"_open"]/60) + (store[dayName+"_open"] > 720 ? "PM" : "AM"),
         close: (store[dayName+"_close"]/60-12) + (store[dayName+"_close"] > 720 ? "PM" : "AM"),
-        status: currentDate.getMinutes() > store[dayName+"_open"] && currentDate.getMinutes() < store[dayName+"_close"] ? "OPEN" : "CLOSED"
+        status:()=> hours > store[dayName+"_open"] && hours < store[dayName+"_close"] ? "OPEN" : "CLOSED"
       }
     },
     showType: function(msg) {
