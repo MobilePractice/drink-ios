@@ -6,13 +6,13 @@ var {
   StyleSheet,
   TabBarIOS,
   Text,
-  View,
-  NavigatorIOS
+  View
   
 } = React;
 
 var Dashboard = require("./dashboard");
 var Search = require("./search");
+var TopPicks = require("./toppicks");
 
 var Icon = require("react-native-vector-icons/Ionicons");
 
@@ -94,7 +94,7 @@ var TabBar = React.createClass({
               selectedTab: "top-picks",
             });
           }}>
-          <Dashboard />
+          <TopPicks />
         </Icon.TabBarItem>
     
         <Icon.TabBarItem

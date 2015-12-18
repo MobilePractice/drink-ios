@@ -45,11 +45,11 @@ var Dashboard = React.createClass({
         // console.log("initial coordinates: ", this.state.lastPosition.coords);
         let currentLatitude = this.state.lastPosition.coords.latitude;
         let currentLongitude = this.state.lastPosition.coords.longitude;
-        let refinedStoreLocations = this.state.allStores.filter(calculateDistance);
+        let refinedStoreLocations = this.state.allStores ? this.state.allStores.filter(calculateDistance) : [];
 
         this.props.navigator.push({
                 component: Maps,
-                title: "Maps",
+                title: "Change Store",
                 navigationBarHidden: false,
                 leftButtonIcon: this.state.rightIcon,
                 onLeftButtonPress: this._handleBackButtonPress,
@@ -57,7 +57,8 @@ var Dashboard = React.createClass({
                 passProps: {
                   favouriteStore: this.state.storeName,
                   currentLocation: this.state.lastPosition,
-                  storeLocations: refinedStoreLocations
+                  storeLocations: refinedStoreLocations,
+                  updateSelectedStore: this.updateSelectedStore
               }
         });
 
@@ -90,7 +91,9 @@ var Dashboard = React.createClass({
           address1: "loading...",
           initialPosition: 'unknown',
           lastPosition: 'unknown',
-          rightIcon: null
+          rightIcon: null,
+          storeTime: "",
+          storeTimeStatus: ""
         };
     },
     componentWillUnmount: function() {
@@ -99,11 +102,30 @@ var Dashboard = React.createClass({
     detectLocation: function() {
       navigator.geolocation.getCurrentPosition(
         (initialPosition) => this.getNearStore(initialPosition.coords),
-        (error) => alert(error.message),
+        (error) => this.didNotDetectLocation(error),
         {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
       );
       this.watchID = navigator.geolocation.watchPosition((lastPosition) => {
         this.setState({lastPosition});
+      });
+    },
+    didNotDetectLocation: function(error) {
+      this.setState({
+        storeName: "Could not detect your location",
+        address1: "Make sure that location services is enabled"
+      });
+      console.log(error);
+    },
+    updateSelectedStore: function(id) {
+      let store = this.state.allStores.filter(s=>s.id == id)[0];
+
+      let _time = this.formatStoreTime(store);
+
+      this.setState({
+        storeName: store.name.toUpperCase(),
+        address1: store.address_line_1.toUpperCase(),
+        storeTime: ", " + _time.open + " - " + _time.close,
+        storeTimeStatus: _time.status
       });
     },
     getNearStore: function(coords) {
@@ -111,37 +133,61 @@ var Dashboard = React.createClass({
         .then(response => response.json())
         .then(responseData => {
           if (!responseData.length) {
-              // console.log("gimme the store locations>>>>:", responseData.result);
+            let _time = this.formatStoreTime(responseData.result[0]);
+            
             this.setState({
               storeName: responseData.result[0].name.toUpperCase(),
               address1: responseData.result[0].address_line_1.toUpperCase(),
+              storeTime: ", " + _time.open + " - " + _time.close,
+              storeTimeStatus: _time.status,
               allStores: responseData.result
             });
           } else {
             this.setState({
               storeName: "No store found",
               address1: "",
+              storeTime: "",
               allStores: responseData.result
             });
           }
         })
-        .done();
+        .catch(this.didNotDetectLocation);
     },
-    fetchStoreData: function()  {
+    fetchStoreData: function() {
        fetch(apiEndPoint+"stores")
         .then(response => response.json())
         .then(responseData => {
+          let _time = this.formatStoreTime(responseData.result[0]);
+  
           this.setState({
             storeName: responseData.result[0].name.toUpperCase(),
-            address1: responseData.result[0].address_line_1.toUpperCase()
+            address1: responseData.result[0].address_line_1.toUpperCase(),
+            storeTime: ", " + _time.open + "-" + _time.close
           });
         })
-        .done();
+        .catch(this.didNotDetectLocation);
+    },
+    formatStoreTime: function(store) {
+      let weekDays = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+      let currentDate = new Date();
+      let day = currentDate.getDay();
+      let dayName = weekDays[day];
+
+      return {
+        open: (store[dayName+"_open"]/60) + (store[dayName+"_open"] > 720 ? "PM" : "AM"),
+        close: (store[dayName+"_close"]/60-12) + (store[dayName+"_close"] > 720 ? "PM" : "AM"),
+        status: currentDate.getMinutes() > store[dayName+"_open"] && currentDate.getMinutes() < store[dayName+"_close"] ? "OPEN" : "CLOSED"
+      }
     },
     showType: function(msg) {
         this._loadSearch(msg);
     },
+    _openStatusStyle :function() { 
+      return this.state.storeTimeStatus === "CLOSED" ? 
+          {fontWeight: "bold", color: "red"} : {fontWeight: "bold", color: "green"}
+    },
     render: function(){
+    
     return (
       <ScrollView automaticallyAdjustContentInsets={false} style={styles.scroll}>
             <View style={styles.toolbar}>
@@ -166,18 +212,21 @@ var Dashboard = React.createClass({
               <View style={styles.preferredStore}>
                 <Image style={styles.marker} source={{uri: 'marker'}} resizeMode="contain"/>
                 <View style={styles.preferredStoreTextContainer}>
-                  <Text style={styles.storeName}>{this.state.storeName}</Text>
-                  <Text style={styles.storeAddressAndTime}>{this.state.address1}, 9:30AM - 10:00PM</Text>
+                  <Text numberOfLines={1} style={styles.storeName}>{this.state.storeName}</Text>
+                  <Text numberOfLines={1} style={styles.storeAddressAndTime}>{this.state.address1}{this.state.storeTime} <Text style={this._openStatusStyle()}>{this.state.storeTimeStatus}</Text></Text> 
                 </View>
               </View>
               <View style={styles.locationButtons}>
-                <TouchableOpacity style={styles.locationButton1} onPress={()=>this._loadMap()}><Text style={styles.locationButtonText}>CHANGE MY STORE</Text></TouchableOpacity>
-                <TouchableOpacity style={styles.locationButton2} onPress={() => this._loadMap()}><Text style={styles.locationButtonText}>MY ORDERS</Text></TouchableOpacity>
+                <TouchableOpacity style={styles.locationButton1} onPress={this._loadMap}>
+                  <Text style={styles.locationButtonText}>CHANGE MY STORE</Text>
+                </TouchableOpacity>
               </View>
             </View>
 
             <View style={styles.currentLocation}>
-              <Text style={styles.currentLocationText}>SHOP {this.state.storeName}</Text>
+              <TouchableOpacity onPress={this._loadMap}>
+                <Text style={styles.currentLocationText}>SHOP {this.state.storeName}</Text>
+              </TouchableOpacity>
             </View>
 
             <View style={styles.topBooze}>
@@ -324,7 +373,7 @@ var styles = StyleSheet.create({
     storeAddressAndTime: {
       fontSize: 11,
       color: "#6d6e71",
-      fontFamily: "Helvetica-Light"
+      fontFamily: "Helvetica-Light",
     },
     locationButtons: {
       flexDirection: "row",
@@ -337,8 +386,6 @@ var styles = StyleSheet.create({
       textAlign: "center",
       borderTopWidth: 1,
       borderTopColor:"#c7c8ca",
-      borderRightWidth: 1,
-      borderRightColor:"#c7c8ca",
       height: 37
     },
     locationButton2: {

@@ -129,7 +129,6 @@ var MapRegionInput = React.createClass({
   _onChangeLongitudeDelta: function(e) {
     regionText.longitudeDelta = e.nativeEvent.text;
   },
-
   _change: function() {
     this.setState({
       latitude: parseFloat(regionText.latitude),
@@ -165,7 +164,10 @@ var MapViewExample = React.createClass({
       dataSource: []
     };
   },
-
+  navigateBack: function(id) {
+    this.props.updateSelectedStore(id);
+    this.props.navigator.pop();
+  }, 
 
   render() {
       let markers = this.props.storeLocations.map((marker)=>{
@@ -181,7 +183,7 @@ var MapViewExample = React.createClass({
 
       let storeLocations = this.props.storeLocations.map((store, index)=>{
           let markerNumber = index+1;
-          let distance = store.distance_in_meters/100;
+          let distance = store.distance_in_meters/1000;
           let openingHours = store[dayName+"_open"]/60;
           let closingHours = store[dayName+"_close"]/60-12;
           let starMarker = <Image style={styles.marker} source={{uri: 'marker'}} resizeMode="contain"/>;
@@ -194,7 +196,7 @@ var MapViewExample = React.createClass({
           }
 
           return (
-                <Cell style={styles.storeRow} key={store.id}>
+                <Cell onPress={()=>this.navigateBack(store.id)} style={styles.storeRow} key={store.id}>
                     <View>
                         {usedMarker}
                     </View>
